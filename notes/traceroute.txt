@@ -1,0 +1,16 @@
+$ tracerouote larepubblica.it
+traceroute to larepubblica.it (104.28.4.97), 30 hops max, 60 byte packets
+ 1  192.168.2.254 (192.168.2.254)  0.270 ms  0.345 ms  0.407 ms
+ 2  * * *
+ 3  172.17.193.129 (172.17.193.129)  30.711 ms  34.323 ms  34.599 ms
+ 4  172.17.192.57 (172.17.192.57)  36.321 ms 172.17.192.53 (172.17.192.53)  38.547 ms 
+    -> 172.17.192.49 (172.17.192.49)  38.746 ms
+ 5  172.19.244.94 (172.19.244.94)  45.357 ms  46.577 ms 
+    -> 172.19.242.145 (172.19.242.145)  63.910 ms
+ 6  etrunk38.milano1.mil.seabone.net (195.22.192.108)  50.315 ms  30.919 ms 
+    -> etrunk38.milano50.mil.seabone.net (195.22.196.92)  39.778 ms
+ 7  ae10.milano58.mil.seabone.net (195.22.208.117)  51.659 ms 
+    -> ae11.milano58.mil.seabone.net (195.22.208.79)  34.529 ms 
+    -> ae10.milano58.mil.seabone.net (195.22.208.117)  51.789 ms
+ 8  cloudflare.milano58.mil.seabone.net (195.22.196.97)  36.523 ms  39.928 ms  42.397 ms
+ 9  104.28.4.97 (104.28.4.97)  48.575 ms  47.245 ms  44.470 ms

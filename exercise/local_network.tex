@@ -1,0 +1,433 @@
+\documentclass{article}
+
+\usepackage{fancyhdr}
+\usepackage{extramarks}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{tikz}
+\usetikzlibrary{calc,arrows}
+\usepackage[plain]{algorithm}
+\usepackage{algpseudocode}
+\usepackage{enumitem} %% for custom list
+\usepackage{graphicx} %% used to split page in two columns
+\usepackage{multicol}
+\usetikzlibrary{automata,positioning}
+\usepackage{color}
+
+\usepackage{mathtools}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+% using \code{come code monospaced}
+\def\code#1{\texttt{#1}}
+
+%
+% Basic Document Settings
+\topmargin=-0.45in
+\evensidemargin=0in
+\oddsidemargin=0in
+\textwidth=6.5in
+\textheight=9.0in
+\headsep=0.25in
+
+\linespread{1.1}
+
+\pagestyle{fancy}
+\lfoot{\lastxmark}
+\cfoot{\thepage}
+
+\renewcommand\headrulewidth{0.4pt}
+\renewcommand\footrulewidth{0.4pt}
+
+\setlength\parindent{0pt}
+
+\setcounter{secnumdepth}{0}
+
+% change name of the problem here
+\newenvironment{homeworkProblem}[1][-1]{
+    \section{CONFIGURAZIONE RETE LOCALE}
+}{}
+\nobreak\extramarks{TCP}{}\nobreak{}
+
+
+\begin{document}
+
+\begin{homeworkProblem}
+	\textbf{\\\\\\\\\\\\\\\\\\\\\\\\Considerazioni:}	% so many spaces! for pagination..
+	\begin{itemize}[noitemsep]
+		\item l'indirizzo IP dell'interfaccia \code{eth0} di R1 posso assumerlo assegnato 
+		      dinamicamente dall'ISP
+		\item in questa configurazione dei router non ha molto senso creare una sottorete comune a 
+		      tutti i router, in quanto una sottorete devrebbe condividere lo stesso dominio di 
+		      broadcast.
+	\end{itemize}
+
+	\textbf{\\1)} Per assegnare gli indirizzi alle LAN considero:
+	\begin{itemize}[noitemsep]
+		\item pool di indirizzi per le LAN pubbliche: \code{130.175.4.0/22}
+		\item pool di indirizzi per le LAN private: \code{10.0.0.0/8}
+	\end{itemize}
+	
+	
+	Essendo che tutte le LAN devono avere una sottorete in \code{/24} posso dividere il pool di 
+	indirizzi pubblici nel 	seguente modo:
+	\begin{center}
+	\begin{tikzpicture}[>=latex]
+
+	\coordinate (A) at (0,8);
+	\coordinate (B) at (0,0);
+	
+	\coordinate (C) at (4,8);
+	\coordinate (D) at (4,0);
+
+	\coordinate (E) at (8,8);
+	\coordinate (F) at (8,0);
+	
+	% draw line
+	\draw[thick] (A)--(B) (C)--(D) (E) -- (F);
+	% label it on the top	
+	\draw (A) node[above]{\Large \code{/22}};
+	\draw (C) node[above]{\Large \code{/23}};
+	\draw (E) node[above]{\Large \code{/24}};
+	
+	\coordinate (A1) at ($(A)!.01!(B)$);
+	\draw (A1) node[left]{
+		\begin{tabular}{r}
+			%\textit{}\\
+			\code{.4.0}
+		\end{tabular}
+	};
+	\coordinate (A2) at ($(A)!.99!(B)$);
+	\draw (A2) node[left]{
+		\begin{tabular}{r}
+			%\textit{}\\
+			\code{.7.255}
+		\end{tabular}
+	};
+	
+	\coordinate (C1) at ($(C)!.01!(D)$);
+	\draw (C1) node[left]{
+		\begin{tabular}{r}
+			%\textit{}\\
+			\code{.4.0}
+		\end{tabular}
+	};
+	\coordinate (C2) at ($(C)!.48!(D)$);
+	\draw (C2) node[left]{
+		\begin{tabular}{r}
+			%\textit{}\\
+			\code{.5.255}\\
+			\code{.6.0}
+		\end{tabular}
+	};
+	\coordinate (C3) at ($(C)!.99!(D)$);
+	\draw (C3) node[left]{
+		\begin{tabular}{r}
+			%\textit{}\\
+			\code{.7.255}
+		\end{tabular}
+	};
+	
+	\coordinate (E1) at ($(E)!.01!(F)$);
+	\draw (E1) node[left]{
+		\begin{tabular}{r}
+			%\textit{}\\
+			\code{.4.0}
+		\end{tabular}
+	};
+	\coordinate (E2) at ($(E)!.247!(F)$);
+	\draw (E2) node[left]{
+		\begin{tabular}{r}
+			%\textit{}\\
+			\code{.4.255}\\
+			\code{.5.0}
+		\end{tabular}
+	};
+	\coordinate (E3) at ($(E)!.48!(F)$);
+	\draw (E3) node[left]{
+		\begin{tabular}{r}
+			%\textit{}\\
+			\code{.5.255}\\
+			\code{.6.0}
+		\end{tabular}
+	};
+	\coordinate (E4) at ($(E)!.74!(F)$);
+	\draw (E4) node[left]{
+		\begin{tabular}{r}
+			%\textit{}\\
+			\code{.5.255}\\
+			\code{.6.0}
+		\end{tabular}
+	};
+	\coordinate (E5) at ($(E)!.99!(F)$);
+	\draw (E5) node[left]{
+		\begin{tabular}{r}
+			%\textit{}\\
+			\code{.7.255}
+		\end{tabular}
+	};
+	\end{tikzpicture}
+	\end{center}	
+	
+	\pagebreak
+	Mentre scelgo il seguente pool di indirizzi provati, preso dal quello scritto sopra: 
+	\code{10.42.0.0/22}
+	\begin{center}
+	
+	
+	\begin{tikzpicture}[>=latex]
+
+	\coordinate (A) at (0,8);
+	\coordinate (B) at (0,0);
+	
+	\coordinate (C) at (4,8);
+	\coordinate (D) at (4,0);
+
+	\coordinate (E) at (8,8);
+	\coordinate (F) at (8,0);
+	
+	% draw line
+	\draw[thick] (A)--(B) (C)--(D) (E) -- (F);
+	% label it on the top	
+	\draw (A) node[above]{\Large \code{/22}};
+	\draw (C) node[above]{\Large \code{/23}};
+	\draw (E) node[above]{\Large \code{/24}};
+	
+	\coordinate (A1) at ($(A)!.01!(B)$);
+	\draw (A1) node[left]{
+		\begin{tabular}{r}
+			%\textit{}\\
+			\code{.0.0}
+		\end{tabular}
+	};
+	\coordinate (A2) at ($(A)!.99!(B)$);
+	\draw (A2) node[left]{
+		\begin{tabular}{r}
+			%\textit{}\\
+			\code{.3.255}
+		\end{tabular}
+	};
+	
+	\coordinate (C1) at ($(C)!.01!(D)$);
+	\draw (C1) node[left]{
+		\begin{tabular}{r}
+			%\textit{}\\
+			\code{.0.0}
+		\end{tabular}
+	};
+	\coordinate (C2) at ($(C)!.48!(D)$);
+	\draw (C2) node[left]{
+		\begin{tabular}{r}
+			%\textit{}\\
+			\code{.1.255}\\
+			\code{.2.0}
+		\end{tabular}
+	};
+	\coordinate (C3) at ($(C)!.99!(D)$);
+	\draw (C3) node[left]{
+		\begin{tabular}{r}
+			%\textit{}\\
+			\code{.3.255}
+		\end{tabular}
+	};
+	
+	\coordinate (E1) at ($(E)!.01!(F)$);
+	\draw (E1) node[left]{
+		\begin{tabular}{r}
+			%\textit{}\\
+			\code{.0.0}
+		\end{tabular}
+	};
+	\coordinate (E2) at ($(E)!.247!(F)$);
+	\draw (E2) node[left]{
+		\begin{tabular}{r}
+			%\textit{}\\
+			\code{.0.255}\\
+			\code{.1.0}
+		\end{tabular}
+	};
+	\coordinate (E3) at ($(E)!.48!(F)$);
+	\draw (E3) node[left]{
+		\begin{tabular}{r}
+			%\textit{}\\
+			\code{.1.255}\\
+			\code{.2.0}
+		\end{tabular}
+	};
+	\coordinate (E4) at ($(E)!.74!(F)$);
+	\draw (E4) node[left]{
+		\begin{tabular}{r}
+			%\textit{}\\
+			\code{.2.255}\\
+			\code{.3.0}
+		\end{tabular}
+	};
+	\coordinate (E5) at ($(E)!.99!(F)$);
+	\draw (E5) node[left]{
+		\begin{tabular}{r}
+			%\textit{}\\
+			\code{.3.255}
+		\end{tabular}
+	};
+	\end{tikzpicture}
+	\end{center}	
+	
+	\textit{}\newline\newline % this is for pagination
+	Assegno quindi gli indirizzi alle LAN:
+	\begin{center}
+ 	\begin{tabular}{r c l c c}
+ 		LAN1 & : & sub1 & = & \code{130.175.4.0/24}\\
+ 		LAN2 & : & sub2 & = & \code{130.175.5.0/24}\\
+ 		LAN3 & : & sub3 & = & \code{130.175.6.0/24}\\
+ 		LAN4 & : & sub4 & = & \code{130.175.7.0/24}\\\\
+ 		
+ 		LANP1 & : & sub5 & = & \code{10.42.0.0/24}\\
+ 		LANP2 & : & sub6 & = & \code{10.42.1.0/24}\\
+ 		LANP3 & : & sub7 & = & \code{10.42.2.0/24}\\
+ 		LANP4 & : & sub8 & = & \code{10.42.3.0/24}\\\\
+ 		
+ 		LANR1R2 & : & sub9 & = & \code{10.43.0.0/30}\\
+ 		LANR2R3 & : & sub10 & = & \code{10.43.0.4/30}\\
+ 		LANR3R4 & : & sub11 & = & \code{10.44.0.8/30}\\
+ 	\end{tabular}
+ 	\end{center}
+ 	
+ 	\pagebreak
+ 	\textbf{2)} Per ogni interfaccia di rete di ogni router gli assegno un indirizzo:
+ 	\begin{center}
+ 	\begin{tabular}{r r c l }
+ 		\textbf{R1:} & \code{eth0} & = & \code{14.132.70.4/22}\\
+ 			         & \code{eth1} & = & \code{130.175.4.1/24}\\
+ 			         & \code{eth2} & = & \code{10.43.0.1/30}\\
+ 			         & \code{eth3} & = & \code{10.42.0.1/24}\\\\
+ 			         
+ 	    \textbf{R2:} & \code{eth0} & = & \code{10.43.0.2/30}\\
+ 			         & \code{eth1} & = & \code{130.175.5.1/24}\\
+ 			         & \code{eth2} & = & \code{10.43.0.5/30}\\
+ 			         & \code{eth3} & = & \code{10.42.1.1/24}\\
+ 			         
+ 	    \textbf{R3:} & \code{eth0} & = & \code{10.43.0.6/30}\\
+ 			         & \code{eth1} & = & \code{130.175.6.1/24}\\
+ 			         & \code{eth2} & = & \code{10.43.0.9/30}\\
+ 			         & \code{eth3} & = & \code{10.42.2.1/24}\\\\
+ 			         
+ 	    \textbf{R3:} & \code{eth0} & = & \code{10.43.0.10/30}\\
+ 			         & \code{eth1} & = & \code{130.175.7.1/24}\\
+ 			         & \code{eth2} & = & \code{10.42.3.1/24}\\\\ 	
+ 	\end{tabular}
+ 	\end{center}
+ 	
+ 	
+ 	
+ 	\pagebreak
+ 	\textbf{3)} Tabella di routing di \textbf{R4}\\
+ 	\begin{center}
+ 	\begin{tabular}{l l l | p{8cm}}
+  		\textbf{DST} & \textbf{IFACE} & \textbf{NH} & Dividere la tabella nelle seguenti parti: \\
+  		\hline
+ 		\code{130.175.7.0/24} & \code{eth1} & \code{direct} & \textbf{(1)} tutte le sottoreti che raggiungo
+ 		                                                      direttamente\\
+ 		\code{10.42.1.0/24}   & \code{eth2} & \code{direct} &\\\\
+ 		
+ 		\textcolor{blue}{\code{10.42.0.0/24}} & \code{eth0} & \code{10.43.0.9/30} & \textbf{(2)} tutte le 
+ 		                                                                            altre sottoreti che mi 
+ 		                                                                            serve raggiungere\\
+ 		\textcolor{blue}{\code{10.42.1.0/24}} & \code{eth0} & \code{10.43.0.9/30}&\\
+ 		\code{10.42.2.0/24} & \code{eth0} & \code{10.43.0.9/30}&\\
+ 		\textcolor{blue}{\code{130.175.4.0/24}} & \code{eth0} & \code{10.43.0.9/30}&\\
+ 		\textcolor{blue}{\code{130.175.5.0/24}} & \code{eth0} & \code{10.43.0.9/30}&\\
+ 		\code{130.175.6.0/24} & \code{eth0} & \code{10.43.0.9/30}&\\\\
+ 		
+ 		\code{0.0.0.0/0} & \code{eth0} & \code{10.43.0.9/30}& \textbf{(3)} la rotta di default\\ 		
+ 	\end{tabular}
+	\end{center}
+	
+	\textbf{\\OSS 1)} Come si pu\'o notare la tabella di routing ha molte entrate. Si possono ridurre se si 
+	sono assegnati in modo appropriato gli indirizzi IP. Come si pu\'o vedere gli indirizzi in 
+	\textcolor{blue}{blu} appartengono a blocchi di indirizzo contigui e sono destinati verso la stessa 
+	interfaccia di rete e verso lo stesso indirizzo IP.
+
+	Quindi \'e possibile accoppiarli nello stesso blocco: \code{10.42.0.0/23} e \code{130.175.4.0/23}.	
+
+	\textbf{\\OSS 2)} Come si pu\'o anche notare, ho due interfacce che collegano due sottoreti distinte, 
+	\code{eth1} ed \code{eth2}, mentre per raggiungere il resto della rete ed Internet devo inoltrare tutto 
+	su \code{eth0} allo stesso indirizzo IP \code{10.43.0.9/30}.
+	
+	Alla luce di questo si potrebbe (\emph{solo per questo router}) evitare di scrivere tutta la parte 
+	\textbf{(2)}, ma direttamente la rotta di default.
+	\begin{itemize}[noitemsep]
+		\item vantaggi: tabella di routing minima
+		\item svantaggi: meno chiarezza
+	\end{itemize}
+	
+	\textit{}\newline % this is for pagination
+	Tabella di routing di \textbf{R3}\\
+	\begin{center}
+ 	\begin{tabular}{l l l}
+  		\textbf{DST} & \textbf{IFACE} & \textbf{NH} \\
+  		\hline
+ 		\code{130.175.6.0/24} & \code{eth1} & \code{direct} \\
+ 		\code{10.42.2.0/24}   & \code{eth3} & \code{direct} \\\\
+ 		
+ 		\code{130.175.7.0/24} & \code{eth2} & \code{10.43.0.10/30}\\
+        \code{10.42.3.0/24}   & \code{eth2} & \code{10.43.0.10/30}\\         		
+	    \textcolor{blue}{\code{130.175.4.0/24}} & \code{eth0} & \code{10.43.0.5/30}\\
+ 		\textcolor{blue}{\code{130.175.5.0/24}} & \code{eth0} & \code{10.43.0.5/30}\\         		
+ 		\textcolor{blue}{\code{10.42.0.0/24}}   & \code{eth0} & \code{10.43.0.5/30}\\
+ 		\textcolor{blue}{\code{10.42.1.0/24}}   & \code{eth0} & \code{10.43.0.5/30}\\\\
+ 		
+ 		\code{0.0.0.0/0} & \code{eth0} & \code{10.43.0.9/30}\\ 		
+ 	\end{tabular}
+	\end{center}	
+	\textbf{OSS 3)} Anche in questo caso vale l'accorpamento degli indirizzi in \textcolor{blue}{blu} e la 
+	\textbf{OSS (2)}.
+	
+	\pagebreak
+	Tabella di routing di \textbf{R2}\\
+	\begin{center}
+ 	\begin{tabular}{l l l}
+  		\textbf{DST} & \textbf{IFACE} & \textbf{NH} \\
+  		\hline
+ 		\code{130.175.5.0/24} & \code{eth1} & \code{direct} \\
+ 		\code{10.42.1.0/24}   & \code{eth3} & \code{direct} \\\\	
+ 		
+ 		\textcolor{blue}{\code{130.175.6.0/24}} & \code{eth2} & \code{10.43.0.6/30}\\
+ 		\textcolor{blue}{\code{130.175.7.0/24}} & \code{eth2} & \code{10.43.0.6/30}\\
+ 		\textcolor{blue}{\code{10.42.2.0/24}}   & \code{eth2} & \code{10.43.0.6/30}\\
+ 		\textcolor{blue}{\code{10.42.3.0/24}}   & \code{eth2} & \code{10.43.0.6/30}\\
+ 		
+ 		\code{130.175.4.0/24} & \code{eth0} & \code{10.43.0.1/30}\\
+        \code{10.42.0.0/24}   & \code{eth0} & \code{10.43.0.1/30}\\\\    
+ 		
+ 		\code{0.0.0.0/0} & \code{eth0} & \code{10.43.0.9/30}\\ 		
+ 	\end{tabular}
+	\end{center}	
+	\textbf{OSS 4)} Anche in questo caso vale l'accorpamento degli indirizzi in \textcolor{blue}{blu} e la 
+	\textbf{OSS (2)}.
+	
+	\textit{}\newline % this is for pagination
+	Tabella di routing di \textbf{R1}\\
+	\begin{center}
+ 	\begin{tabular}{l l l}
+  		\textbf{DST} & \textbf{IFACE} & \textbf{NH} \\
+  		\hline
+ 		\code{130.175.4.0/24} & \code{eth1} & \code{direct} \\
+ 		\code{10.42.0.0/24}   & \code{eth3} & \code{direct} \\\\	
+ 		
+ 		\textcolor{blue}{\code{130.175.5.0/24}} & \code{eth2} & \code{10.43.0.2/30}\\
+ 		\textcolor{blue}{\code{130.175.6.0/24}} & \code{eth2} & \code{10.43.0.2/30}\\
+ 		\textcolor{blue}{\code{130.175.7.0/24}} & \code{eth2} & \code{10.43.0.2/30}\\
+ 		\textcolor{blue}{\code{10.42.1.0/24}}   & \code{eth2} & \code{10.43.0.2/30}\\
+ 		\textcolor{blue}{\code{10.42.2.0/24}}   & \code{eth2} & \code{10.43.0.2/30}\\
+ 		\textcolor{blue}{\code{10.42.3.0/24}}   & \code{eth2} & \code{10.43.0.2/30}\\
+ 		
+ 		\code{0.0.0.0/0} & \code{eth0} & \code{10.43.0.9/30}\\ 		
+ 	\end{tabular}
+	\end{center}	
+	\textbf{OSS 5)} Anche in questo caso vale l'accorpamento degli indirizzi in \textcolor{blue}{blu} e la 
+	\textbf{OSS (2)}.
+	
+\end{homeworkProblem}
+
+\end{document}

@@ -1,0 +1,158 @@
+\documentclass[12pt]{article} 
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem} %% for custom list
+%\usepackage{graphicx} %% for images
+%\usepackage{multirow} %% for tables
+%\usepackage{bigints}  %% for integrals
+
+% used for tabbed spacing
+%\newcommand{\itab}[1]{\hspace{0em}\rlap{#1}}
+%\newcommand{\tab}[1]{\hspace{.4\textwidth}\rlap{#1}}
+
+\begin{document}
+\date{}
+%\author{Andrea Ghizzoni \\
+%some other info}
+\title{\vspace{-11ex}} %% used for no title
+ 
+\maketitle
+
+\section{Livello Fisico}\label{fisico}
+Ogni mezzo trasmissivo ha una certa banda di frequenza a cui vengono trasmesse delle informazioni senza una forte 
+attenuazione.
+
+Segnali che partono da 0 fino alla frequenza massima vengono chiamati in \textit{Banda Base}, mentre i segnali che 
+vengono traslati per occupare frequenze pi\'u alte vengono chiamate in \textit{Banda Passante}.
+
+\paragraph{Teorema di Shannon} \'E possibile identificare un limite superiore della capacit\'a di un mezzo trasmissivo
+sotto le ipotesi che esso attenui e aggiunga solo rumore al segnale:
+\begin{center}
+    $ C = B*\log_2(1+S/N) $
+\end{center}
+dove:
+\begin{itemize}[noitemsep]
+    \item C [bit/s]: capacit\'a del canale
+    \item B [Hz]: banda del canale
+    \item S [J]: energia del segnale per ciascun bit trasmesso
+    \item N [J]: energia del rumore del canale aggiunto
+\end{itemize}
+Il rapporto $S/N$ \'e un numero puro e viene chiamato \textit{rapporto segnale-rumore} ed espresso in \textit{Decibel}:
+\begin{center}
+    $ dB = 10 * log_{10}(S/N) $
+\end{center}
+\clearpage
+
+
+\subsection{Modulazione Digitale e Multiplexing}
+Ogni mezzo trasmissivo, cablato o wireless, trasmette un segnale analogico che varia nel tempo. Per questo motivo si
+usano tecniche per associare ad intervalli continui del segnale analogico, un singolo valore del segnale digitale.
+
+Il secondo problema \'e quello della condivisione del mezzo trasmissivo, ovvero come permettere a pi\'u stazioni di 
+trasmettere simultaneamente utilizzando lo stesso canale. Per risolvere questo problema si utilizzano le tecniche di 
+\textit{Modulazione}, cio\'e tecniche finalizzate ad imprimere un segnale elettrico, detto  \textit{modulante} su di un 
+altro segnale elettrico detto \textit{Portante}.
+
+\subsubsection{Trasmissione in Banda Base}
+Questo tipo di trasmissione prevede l'uso di tensione positiva per rappresentare un "1" (digitale) e negativa per lo 
+"0". Questo approccio viene chiamato \textit{NRZ} (\textit{Non Zero Return}) il che significa che il segnale segue
+l'andamento dei dati.
+
+Presenta per\'o molti problemi tecnici, che vengono parzialmente risolti utilizzando alti tipo di codifiche (ad 
+esempio la codifica di Manchester).
+
+\paragraph{Multiplaxing a Divisione di Tempo} La tecnica pi\'u semplice per permettere a pi\'u segnali di trasmettere
+su unico mezzo trasmissivo \'e quella di assegnare l'intero canale ad una singola stazione per un certo lasso di 
+tempo; questa multiplazione del canale viene chiamata \textit{TDM} (\textit{Time Division Multiplexing}).
+
+\paragraph{Efficienza di Banda} Un segnale potrebbe oscillare da 0 a 1 (ovvero da negativo a positivo) ogni 1 bit, il 
+che vuol dire che la banda richiesta \'e di $B/2$ Hz se il tasso di invio dei bit (bit rate) \'e di B bit/s. Di
+conseguenza non si pu\'o aumentare la velocit\'a di trasmissione senza incrementare la banda.
+
+Una possibile soluzione sarebbe di usare quattro livelli di tensione, al posto di due, per rappresentare il segnale
+digitale. Questo porterebbe ad un dimezzamento del bit rate e di conseguenza di banda, ma con l'unico svantaggio che 
+richiederebbe apparecchiature pi\'u costose in quanto devono amplificare di pi\'u il segnale ed essere pi\'u \\
+sensibili alle variazioni dei quattro livelli di tensione.
+
+\paragraph{Clock Recovery} Per effettuare una corretta codifica, il ricevitore deve sapere quando un simbolo termina 
+e quando inizia il successivo. Questo pu\'o essere un problema nel caso di lunghe sequenza di 1 o di 0. Una delle 
+tecniche per risolvere questo genere di problematiche \'e quello di temporizzare il ricevitore.
+
+
+\subsubsection{Trasmissione in Banda Passante}
+Usare un segnale che non inizia ad una gamma di frequenze a zero, viene chiamato \textit{trasmissione in banda 
+passante}. Un segnale in banda base pu\'o essere traslato in banda passante senza perdita di informazioni.
+
+\paragraph{Multiplexing a Divisione di Frequenza} Per permettere a molti segnali di condividere uno stesso canale 
+trasmissivo, sono nate le tecniche di multiplaxing \textit{FDM} (\textit{Frequency Division Multiplaxing}), ovvero 
+divide lo spettro di frequenza in bande e ogni segnale viene traslato in quella banda.
+
+
+\subsection{La Rete Telefonica}
+La rete telefonica viene definita come \textit{PSTN}, ovvero \textit{Public Switched Telephone Network}, ha come 
+obbiettivo la trasmissione della voce umana in modo pi\'u o meno comprensibile.
+
+\subsubsection{Struttura del Sistema Telefonico}
+Da ogni telefono partono due cavi in rame che si collegano direttamente alla centrale (chiamata che Centrale Locale).
+Le connessioni di ogni telefono con la propria centrale locale viene chiamato \textit{local loop} o \textit{ultimo
+miglio}.
+
+Ogni Centrale Locale ha molti collegamenti in uscita verso uno o pi\'u centri di comunicazione, chiamati
+\textit{Centrali Interrurbane}, le quali a loro volta sono collegate a grandi centri di commutazione nazionali.
+
+
+\subsection{Collegamenti Locali: Modem, ADSL, Fibre}
+Il collegamento locale \'e chiamato ultimo miglio, ovvero il collegamento tra la centrale del gestore telefonico e 
+l'utente finale. Per utilizzare questa linea venivano utilizzati Modem fonici, ovvero che utilizzavano il canale 
+vocale per trasmettere dati digitali.
+
+\paragraph{MoDem} Il termine \textit{MoDem} significa \textit{Modulatore-Demodulatore}, ovvero un dispositivo in 
+grado di Modulare una serie di segnali digitali secondo un segnale portante e Demodularlo per ottenere tutti i 
+segnali originali.\\\\
+Al giorno d'oggi sono sostituiti con i Modem \textit{ADSL}, ma entrambi risentono delle caratteristiche negative 
+dell'ultimo miglio.
+
+\subsubsection{Modem Telefonici}
+I Modem Telefonici hanno il compito di trasmetter bit su canali analogici. Dall'altra parte del cavo il segnale viene
+riconvertito in bit. Dal punto di vista logico il modem si colloca tra il computer (digitale) e il sistema telefonico
+(analogico).
+
+\subsubsection{Linee DSL}
+I collegamenti \textit{DSL} (\textit{Digital Subscriber Line}), hanno portato un'incredibile miglioramento delle
+prestazioni in quanto non usano la frequenza di banda della voce (300 Hz - 3400 Hz) ma l'intera banda messa a 
+disposizione del mezzo trasmissivo. 
+
+Il servizio DSL \'e stato progettato per funzionare su doppini di categoria 3 e non devono interferire con fax e 
+telefoni.
+
+La tecnica utilizzata per trasmettere i segnali \'e \textit{OFDM} (\textit{Ortogonal Frequency Division 
+Multiplexing}). L'ampiezza di banda viene divisa per permettere di trasmettere  i dati vocali, e per gestire il 
+downstream e l'upstream dei dati.
+
+Si parla di \textit{ADSL} (\textit{Asymmetric DSL}) quando il downstream \'e maggiore dell'upstram.
+
+
+\subsection{Commutazione}
+Attualmente le reti utilizzano due diverse tecniche di commutazione: la Commutazione di Circuito e quella di 
+Pacchetto.
+
+\subsubsection{Commutazione di Circuito}
+Quando si effettua una chiamata telefonica classica, l'apparecchiatura di commutazione cerca di creare un percorso
+fisico completo tra il telefono chiamante e il chiamato.
+
+\subsubsection{Commutazione di Pacchetto}
+I pacchetti vengono inviati non appena disponibili, al contrario della commutazione di circuito non \'e necessario
+creare un collegamento fisico tra i due apparecchi; non esiste un percorso stabilito. \'E compito dei Router 
+instradare i pacchetti secondo la tecnica Store-and-Forward.
+
+La commutazione di pacchetto non spreca banda, in quando a differenza della commutazione di circuito, non viene 
+pre-allocato un quantitativo di banda per ogni utente.
+
+
+
+
+
+
+
+
+
+\end{document}

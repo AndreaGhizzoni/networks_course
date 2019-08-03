@@ -1,0 +1,62 @@
+bit := Binary Information uniT -> TODO aggiungerlo a pie' di pagina come nota
+
+KB := Kilo (aka 1024) Byte 
+k bit/s := 10^3 (k) bit/s
+
+differenza tra Traffico smaltito (Throughput) e Traffico offerto
+Throughput <= capacita' del canale
+Throughput <= traffico offerto
+
+Non ha senso parlare di capacita' della rete, ma ha senso parlare della
+capacita' di un canale trasmissivo
+
+capacita' canale  A->B : 1 G bit/s
+
+
+# LIVELLO APPLICATIVO
+# perche molto download e poco up ?
+perche si vuole proteggere la capacita' della rete di backbone. perche tutto
+funziona fino a che la capacita' della rete di backbone non e' arrivata al
+limite. il cono di bottiglia si deve verificare solo nella periferia della rete.
+anche per non permettere agli utenti per non fare p2p. perche i gestori voglio
+tenerti come cliente, non come utente.
+
+
+# LIVELLO DATA LINK
+### standard IEEE 802.3
+Ethernet in 802.3 e' implementato nel livello MAC di tipo CSMA-CD 1-persistente,
+in caso di collisione, l;istante in cui trasmetto viene calcolato utilizzando un
+algoritmo di binary exponential backoff:
+    dopo i collisioni, l'host attende prima di ri-iniziare la procedure di
+    trasmissione un tempo casuale nell'intervallo [0, 1, (2^i)-1]
+    - dopo 10 collisioni il tempo di attesa e' limitatoa [0, 1, ..., 1023
+    - dopo 16 collisioni vine riportata una failure al sistema operativo, la
+      rete non e' piu' disponibile
+Questo non e' piu usato in ethernet perche le dimensioni della rete sono
+cresciute molto, perche non si riescono piu a rilevare le collisioni.
+per far questo devo avere:
+    - una dimensione minima della trama
+    - se rilevo una collisione devo far in modo di trasmettere una sequenza di
+      jamming che ha lunghezza 64 byte meno quello che ho gia trasmesso, in modo
+      da avvertire tutte le altre stazioni che c'e' stata una collisione, far
+      star zitta tutte le stazioni tranne quelle interessate, che entreranno in
+      back off esponenziale.
+
+formato della trama ethernet: riflessione sulla trama a dimensione fissa in
+relazione all'overhead della trama ethernet, che non ha senso mandare tutti quei
+byte per un byte di dati di livello superiore.
+
+### un po di storia di ethernet.
+lan con switch = lan estesa
+
+### PPP Point to Point protocol,,usato attualmente nell'ambiente domestico
+accesso con model adsl
+modem fonico: lavora sulle bande della frequenza usate dalla telefonia.
+modem adsl: usa un'altra banda, lasciando intatta  la banda fonica
+- uplink e downlink sono in bande di frequenza differenti
+- utilizzo di filtro di splitter che mi elimina il rumore generato dalla banda
+  di uplink che e' la piu' vicina a quella della telefonia.
+
+### LAN Estesa
+switch usano backward-learning: imparano la destinazione a cui sono collegati
+dagli indirizzi sorgenti contenuti nei loro pacchetti broadcast.
